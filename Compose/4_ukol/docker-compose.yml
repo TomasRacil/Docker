@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  db:
+    image: postgres
+    networks: 
+      - backend
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - db-data:/var/lib/postgres/data
+  
+  backend:
+    image: alpine
+    networks: 
+      - backend
+      - frontend
+    stdin_open: true
+    tty: true
+ 
+  
+  frontend:
+    image: alpine
+    networks:
+      - frontend
+    stdin_open: true
+    tty: true
+    ports: 
+      - 80:80
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
+
+volumes:
+  db-data:
